@@ -61,11 +61,10 @@ Desktop.ini
 !README.md
 
 # Docker files (not needed inside container)
+deploy/
 Dockerfile
 docker-compose.yml
 .dockerignore
 
 # Other config files not needed in container
-Caddyfile
 setup-server.sh
-README-SERVER.md

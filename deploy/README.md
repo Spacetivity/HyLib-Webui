@@ -1,6 +1,6 @@
-# Server Setup - Nur Docker Config
+# Server Setup - Docker Deployment
 
-Du brauchst **nur 3 Dateien** auf dem Server:
+Du brauchst **nur 3 Dateien** im `deploy/` Ordner auf dem Server:
 
 1. `docker-compose.yml`
 2. `Caddyfile`
@@ -12,8 +12,9 @@ Du brauchst **nur 3 Dateien** auf dem Server:
 
 ```bash
 # Lade das Skript herunter und führe es aus
-curl -o setup-server.sh https://raw.githubusercontent.com/Spacetivity/HyLib/main/webui/setup-server.sh
+curl -o setup-server.sh https://raw.githubusercontent.com/Spacetivity/HyLib-webui/main/deploy/setup-server.sh
 chmod +x setup-server.sh
+cd deploy
 ./setup-server.sh
 ```
 
@@ -21,9 +22,11 @@ chmod +x setup-server.sh
 
 **1. docker-compose.yml:**
 ```bash
+cd deploy
 cat > docker-compose.yml << 'EOF'
 services:
   webui:
+    # Standard: Image von GHCR pullen
     image: ghcr.io/spacetivity/hylib-webui:${WEBUI_TAG:-latest}
     restart: unless-stopped
     pull_policy: always
@@ -71,13 +74,16 @@ EOF
 ## Starten
 
 ```bash
+# Im deploy/ Ordner
+cd deploy
+
 # Container starten
 docker compose up -d
 
 # Logs prüfen
 docker compose logs -f
 
-# Updates holen
+# Updates holen (pulled automatisch von GHCR)
 docker compose pull && docker compose up -d
 ```
 

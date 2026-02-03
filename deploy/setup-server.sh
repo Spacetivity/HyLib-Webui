@@ -25,9 +25,14 @@ cat > docker-compose.yml << 'EOF'
 
 services:
   webui:
+    # Standard: Image von GHCR pullen
     image: ghcr.io/spacetivity/hylib-webui:${WEBUI_TAG:-latest}
     restart: unless-stopped
     pull_policy: always
+    # Für lokalen Build: Kommentiere die image-Zeile aus und entferne Kommentar bei build:
+    # build:
+    #   context: ..
+    #   dockerfile: deploy/Dockerfile
     # Port nur intern; nach außen geht alles über Caddy
 
   caddy:
