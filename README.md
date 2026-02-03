@@ -2,7 +2,32 @@
 
 A live preview tool for HyLib format tags. Supports the same format as `HyMessages.parse()` and `MessageParserImpl` in HyLib.
 
-![HyLib WebUI Screenshot](docs/screenshots/main-ui.png)
+<div align="center">
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="docs/screenshots/main-ui.png" alt="Main UI" width="400"/>
+      <br><strong>Main Interface</strong>
+    </td>
+    <td align="center">
+      <img src="docs/screenshots/preview-example.png" alt="Preview Example" width="400"/>
+      <br><strong>Preview Example</strong>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="docs/screenshots/color-example.png" alt="Color Example" width="400"/>
+      <br><strong>Color Tags</strong>
+    </td>
+    <td align="center">
+      <img src="docs/screenshots/gradient-example.png" alt="Gradient Example" width="400"/>
+      <br><strong>Gradient Tags</strong>
+    </td>
+  </tr>
+</table>
+
+</div>
 
 ## Features
 
@@ -21,8 +46,6 @@ npm run dev    # Starts dev server at http://localhost:5173
 npm run build  # Builds for production (output: dist/)
 npm run preview # Preview production build
 ```
-
-![Development Preview](docs/screenshots/preview-example.png)
 
 ## Supported Tags
 
