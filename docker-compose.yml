@@ -1,0 +1,27 @@
+# HyLib Message WebUI – mit Caddy für HTTPS (Let's Encrypt)
+# Vor dem Start: DNS für webui.spacetivity.dev auf die Server-IP zeigen lassen.
+
+services:
+  webui:
+    image: ghcr.io/spacetivity/hylib-webui:${WEBUI_TAG:-latest}
+    restart: unless-stopped
+    pull_policy: always
+    # Port nur intern; nach außen geht alles über Caddy
+
+  caddy:
+    image: caddy:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"   # HTTP (Redirect + ACME-Challenge)
+      - "443:443" # HTTPS
+    environment:
+      DOMAIN: ${DOMAIN:-webui.spacetivity.dev}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+    depends_on:
+      - webui
+    # Caddy holt sich das SSL-Zertifikat automatisch von Let's Encrypt
+
+volumes:
+  caddy_data:

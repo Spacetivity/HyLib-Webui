@@ -1,0 +1,11 @@
+# Domain aus Umgebungsvariable (docker-compose setzt DOMAIN)
+# Caddy fordert automatisch ein Let's-Encrypt-Zertifikat an (HTTP-01).
+# Voraussetzung: DOMAIN zeigt per DNS auf diesen Server (Port 80/443 erreichbar).
+
+{
+    email tobiasheimboeck@outlook.com
+}
+
+{$DOMAIN} {
+    reverse_proxy webui:80
+}

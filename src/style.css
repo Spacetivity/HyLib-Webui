@@ -1,0 +1,444 @@
+/* Hytale-style color palette and typography */
+
+:root {
+  /* Hytale dark theme - from hytale.com */
+  --bg-dark: #18181d;
+  --bg-panel: #1e2841;
+  --bg-input: #253457;
+  --bg-preview: #1e2841;
+  --border: #2d3a5a;
+  --border-light: #3d4d6e;
+  --text: #e8ecf4;
+  --text-muted: #8b9bb8;
+  --accent: #f4c94c;
+  --accent-hover: #ffd966;
+  --accent-blue: #4a97d9;
+  --accent-blue-hover: #5aa8ea;
+  --link: #8ccae7;
+  --link-hover: #b6e6fb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background-color: #10233f;
+  background-image: url("https://hytale.com/static/images/backgrounds/content-upper-new-1920.jpg");
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--text);
+  line-height: 1.5;
+  font-weight: 400;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(16, 35, 63, 0.4) 0%, rgba(16, 35, 63, 0.5) 50%, rgba(18, 24, 61, 0.6) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+#app {
+  flex: 1;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+/* Templates */
+.templates-section {
+  margin-bottom: 1rem;
+}
+
+.templates-section label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.templates-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.template-btn {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.8rem;
+  font-family: inherit;
+  font-weight: 500;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.template-btn:hover {
+  background: var(--border);
+  color: var(--text);
+}
+
+/* Placeholders */
+.placeholders-section {
+  margin-bottom: 1rem;
+}
+
+.placeholders-section label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.placeholders-hint {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+}
+
+.placeholders-input {
+  width: 100%;
+  min-height: 50px;
+  padding: 0.6rem;
+  font-size: 0.85rem;
+  font-family: inherit;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  resize: vertical;
+}
+
+/* Validation */
+.validation-section {
+  margin-bottom: 1rem;
+}
+
+.validation-box {
+  padding: 0.6rem;
+  font-size: 0.85rem;
+  background: rgba(170, 0, 0, 0.15);
+  border: 1px solid rgba(255, 85, 85, 0.4);
+  border-radius: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.validation-box:empty,
+.validation-box[hidden] {
+  display: none;
+}
+
+.validation-warning {
+  color: #ff8888;
+}
+
+/* Input area */
+.input-section {
+  margin-bottom: 1rem;
+}
+
+.input-section label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 1rem;
+  font-family: "Source Sans 3", inherit;
+  font-size: 0.95rem;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 2px rgba(74, 151, 217, 0.2);
+}
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toolbar button,
+.toolbar select {
+  padding: 0.45rem 0.85rem;
+  font-size: 0.85rem;
+  font-family: inherit;
+  font-weight: 500;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.toolbar button:hover,
+.toolbar select:hover {
+  background: var(--border);
+  border-color: var(--border-light);
+}
+
+.toolbar select {
+  cursor: pointer;
+  min-width: 110px;
+}
+
+/* Preview */
+.preview-section {
+  margin-bottom: 1.5rem;
+}
+
+.preview-section label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.preview-box {
+  min-height: 80px;
+  padding: 1rem;
+  background: var(--bg-preview);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: "Source Sans 3", inherit;
+}
+
+.preview-box a {
+  color: var(--link);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.preview-box a:hover {
+  color: var(--link-hover);
+}
+
+.preview-box .bold {
+  font-weight: 700;
+}
+
+.preview-box .italic {
+  font-style: italic;
+}
+
+.preview-box .underline {
+  text-decoration: underline;
+}
+
+.preview-box .mono {
+  font-family: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace;
+}
+
+/* Docs */
+.docs-section {
+  margin-top: 2rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1.5rem;
+}
+
+.docs-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 0.9rem;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.25rem 0;
+  transition: color 0.2s;
+}
+
+.docs-toggle:hover {
+  color: var(--accent-hover);
+}
+
+.docs-content-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.docs-content-wrapper.expanded {
+  grid-template-rows: 1fr;
+}
+
+.docs-content {
+  min-height: 0;
+  overflow: hidden;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.docs-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.75rem;
+}
+
+.docs-content th,
+.docs-content td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.docs-content code {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  background: var(--bg-input);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: var(--link);
+}
+
+/* mainBar CTA button - matches Hytale navbar Purchase button */
+.mainBar__cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 0;
+  height: 2.5em;
+  padding: 0 1.2em;
+  margin: 0;
+  border-radius: 5px;
+  border: 1px solid #a17f3c;
+  background: linear-gradient(to bottom, #3583b4, #225b8b);
+  box-sizing: border-box;
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.3);
+  line-height: 2.5em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.mainBar__cta-btn:hover {
+  background: linear-gradient(to bottom, #378abd, #296799);
+}
+
+.mainBar__cta-btn .mainBar__cta-btn__label {
+  display: inline-block;
+  font-family: "Lexend", sans-serif;
+  font-weight: 700;
+  color: #d1dde4;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.08em;
+}
+
+.header-row__buttons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.header-row h1 {
+  margin: 0;
+}
+
+/* Footer */
+.app-footer {
+  margin-top: auto;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  background: rgba(18, 24, 61, 0.5);
+}
+
+.app-footer__credit {
+  margin: 0 0 0.5rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.app-footer__link {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.app-footer__link:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+.app-footer__disclaimer {
+  margin: 0;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
