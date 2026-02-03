@@ -2,6 +2,8 @@
 
 A live preview tool for HyLib format tags. Supports the same format as `HyMessages.parse()` and `MessageParserImpl` in HyLib.
 
+![HyLib WebUI Screenshot](docs/screenshots/main-ui.png)
+
 ## Features
 
 - Real-time preview of HyLib message formatting
@@ -19,6 +21,8 @@ npm run dev    # Starts dev server at http://localhost:5173
 npm run build  # Builds for production (output: dist/)
 npm run preview # Preview production build
 ```
+
+![Development Preview](docs/screenshots/preview-example.png)
 
 ## Supported Tags
 
