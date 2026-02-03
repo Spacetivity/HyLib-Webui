@@ -84,11 +84,14 @@ The WebUI can be deployed using Docker with automatic SSL via Caddy.
 
 ```bash
 # Download and run the setup script
-curl -o setup-server.sh https://raw.githubusercontent.com/Spacetivity/HyLib-webui/main/deploy/setup-server.sh
+curl -o setup-server.sh https://raw.githubusercontent.com/Spacetivity/HyLib-webui/production/deploy/setup-server.sh
 chmod +x setup-server.sh
+mkdir -p deploy
 cd deploy
-./setup-server.sh
+../setup-server.sh
 ```
+
+**Note:** If the download fails (404 error), the repository might not be public yet or the branch doesn't exist. In that case, use Option 2 to create the files manually, or clone the repository and copy `deploy/setup-server.sh` to your server.
 
 The script will create all necessary configuration files in the `deploy/` directory.
 
