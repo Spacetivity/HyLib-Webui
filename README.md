@@ -43,37 +43,22 @@ Die WebUI kann mit Docker und Caddy auf deinem Server laufen. Caddy übernimmt *
 **Image-Build & Push zu GitHub Container Registry**
 
 Das Docker-Image wird automatisch via GitHub Actions zu **GHCR** (`ghcr.io/spacetivity/hylib-webui`) gepusht:
-- Bei jedem Push auf `main` (wenn `webui/` geändert wurde) → Tag `latest`
+- Bei jedem Push auf `production` → Tag `latest`
+- Bei Merge von Pull Requests in `production`
 - Manuell via `workflow_dispatch` mit beliebigem Tag möglich
 
 **Schritte auf dem Server**
 
-1. Im Ordner `webui/` eine `.env` anlegen:
+Siehe [deploy/README.md](deploy/README.md) für detaillierte Anweisungen.
 
-   ```bash
-   cp .env.example .env
-   # Optional: DOMAIN oder WEBUI_TAG anpassen
-   ```
-
-2. Bei privaten GHCR-Repos: Bei GitHub Container Registry einloggen (falls nötig):
-
-   ```bash
-   echo $GITHUB_TOKEN | docker login ghcr.io -u USERNAME --password-stdin
-   ```
-
-   Oder für öffentliche Repos: Login nicht nötig.
-
-3. Container starten (pulled automatisch von GHCR):
-
-   ```bash
-   docker compose up -d
-   ```
-
-4. Beim ersten Start holt Caddy das SSL-Zertifikat von Let's Encrypt. Danach ist die Seite unter **https://webui.spacetivity.dev** erreichbar.
+Kurzfassung:
+1. In den `deploy/` Ordner wechseln
+2. Setup-Skript ausführen oder Dateien manuell erstellen
+3. Container starten: `docker compose up -d`
 
 **Hinweise**
 
-- Das Image wird von `ghcr.io/spacetivity/hylib-webui:latest` gepullt (oder `WEBUI_TAG` aus `.env`).
-- Zertifikate werden im Volume `caddy_data` gespeichert und automatisch erneuert.
-- In der `Caddyfile` kannst du unter `email` eine E-Mail für Let's Encrypt-Benachrichtigungen eintragen.
-- Für Updates: `docker compose pull && docker compose up -d` (holt neues Image von GHCR).
+- Alle Docker-Konfigurationsdateien befinden sich im `deploy/` Ordner
+- Das Image wird von `ghcr.io/spacetivity/hylib-webui:latest` gepullt (oder `WEBUI_TAG` aus `.env`)
+- Zertifikate werden im Volume `caddy_data` gespeichert und automatisch erneuert
+- In der `Caddyfile` kannst du unter `email` eine E-Mail für Let's Encrypt-Benachrichtigungen eintragen
