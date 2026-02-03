@@ -29,7 +29,7 @@ body {
   flex-direction: column;
   font-family: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background-color: #10233f;
-  background-image: url("https://hytale.com/static/images/backgrounds/content-upper-new-1920.jpg");
+  background-image: url("../assets/wallpaper.jpg");
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
