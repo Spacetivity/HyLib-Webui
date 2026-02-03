@@ -1,64 +1,186 @@
 # HyLib Message WebUI
 
-Live preview for HyLib format tags – same format as `HyMessages.parse()` and `MessageParserImpl` in HyLib.
+A live preview tool for HyLib format tags. Supports the same format as `HyMessages.parse()` and `MessageParserImpl` in HyLib.
 
-## Usage
+## Features
+
+- Real-time preview of HyLib message formatting
+- Share formatted messages via URL
+- Copy formatted tag strings
+- Supports all HyLib message tags
+
+## Quick Start
+
+### Development
 
 ```bash
 npm install
-npm run dev    # http://localhost:5173
-npm run build  # Output: dist/
-npm run preview # Serve dist/
+npm run dev    # Starts dev server at http://localhost:5173
+npm run build  # Builds for production (output: dist/)
+npm run preview # Preview production build
 ```
 
 ## Supported Tags
 
-| Tag | Example |
-|-----|---------|
-| `color`, `c`, `colour` | `<color:#ff0000>` or `<red>` |
-| `gradient`, `grnt` | `<gradient:red:blue>text</gradient>` |
-| `bold`, `b` | `<bold>text</bold>` |
-| `italic`, `i`, `em` | `<italic>text</italic>` |
-| `underline`, `u` | `<underline>text</underline>` |
-| `monospace`, `mono` | `<monospace>text</monospace>` |
-| `link`, `url` | `<link:https://...>text</link>` |
-| `reset`, `r` | `<reset>` – clears all styles |
+| Tag | Aliases | Example |
+|-----|---------|---------|
+| `color` | `c`, `colour` | `<color:#ff0000>` or `<red>` |
+| `gradient` | `grnt` | `<gradient:red:blue>text</gradient>` |
+| `bold` | `b` | `<bold>text</bold>` |
+| `italic` | `i`, `em` | `<italic>text</italic>` |
+| `underline` | `u` | `<underline>text</underline>` |
+| `monospace` | `mono` | `<monospace>text</monospace>` |
+| `link` | `url` | `<link:https://...>text</link>` |
+| `reset` | `r` | `<reset>` – clears all styles |
 
-**Named colors:** black, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold, gray, dark_gray, blue, green, aqua, red, light_purple, yellow, white
+### Named Colors
 
-## Share via URL
+`black`, `dark_blue`, `dark_green`, `dark_aqua`, `dark_red`, `dark_purple`, `gold`, `gray`, `dark_gray`, `blue`, `green`, `aqua`, `red`, `light_purple`, `yellow`, `white`
 
-The input can be encoded in the URL hash: `#m=encoded_text`. Use the Copy button to copy the raw tag string.
+## Sharing
 
-## Deployment (Docker mit SSL)
+Messages can be shared via URL hash: `#m=encoded_text`. Use the Copy button to copy the raw tag string.
 
-Die WebUI kann mit Docker und Caddy auf deinem Server laufen. Caddy übernimmt **automatisch** ein Let's-Encrypt-Zertifikat für deine Domain.
+## Deployment
 
-**Voraussetzungen**
+The WebUI can be deployed using Docker with automatic SSL via Caddy.
 
-- Docker & Docker Compose auf dem Server
-- Domain (z. B. `webui.spacetivity.dev`) zeigt per **DNS A-Record** auf die öffentliche IP des Servers
-- Ports **80** und **443** sind von außen erreichbar (kein anderes Programm belegt sie)
+### Prerequisites
 
-**Image-Build & Push zu GitHub Container Registry**
+- Docker and Docker Compose installed on your server
+- A domain name pointing to your server's public IP (DNS A record)
+- Ports 80 and 443 accessible from the internet
 
-Das Docker-Image wird automatisch via GitHub Actions zu **GHCR** (`ghcr.io/spacetivity/hylib-webui`) gepusht:
-- Bei jedem Push auf `production` → Tag `latest`
-- Bei Merge von Pull Requests in `production`
-- Manuell via `workflow_dispatch` mit beliebigem Tag möglich
+### Quick Setup
 
-**Schritte auf dem Server**
+#### Option 1: Automated Setup Script
 
-Siehe [deploy/README.md](deploy/README.md) für detaillierte Anweisungen.
+```bash
+# Download and run the setup script
+curl -o setup-server.sh https://raw.githubusercontent.com/Spacetivity/HyLib-webui/main/deploy/setup-server.sh
+chmod +x setup-server.sh
+cd deploy
+./setup-server.sh
+```
 
-Kurzfassung:
-1. In den `deploy/` Ordner wechseln
-2. Setup-Skript ausführen oder Dateien manuell erstellen
-3. Container starten: `docker compose up -d`
+The script will create all necessary configuration files in the `deploy/` directory.
 
-**Hinweise**
+#### Option 2: Manual Setup
 
-- Alle Docker-Konfigurationsdateien befinden sich im `deploy/` Ordner
-- Das Image wird von `ghcr.io/spacetivity/hylib-webui:latest` gepullt (oder `WEBUI_TAG` aus `.env`)
-- Zertifikate werden im Volume `caddy_data` gespeichert und automatisch erneuert
-- In der `Caddyfile` kannst du unter `email` eine E-Mail für Let's Encrypt-Benachrichtigungen eintragen
+Create the following files in the `deploy/` directory:
+
+**1. docker-compose.yml:**
+
+```yaml
+services:
+  webui:
+    image: ghcr.io/spacetivity/hylib-webui:${WEBUI_TAG:-latest}
+    restart: unless-stopped
+    pull_policy: always
+
+  caddy:
+    image: caddy:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN:-webui.spacetivity.dev}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+    depends_on:
+      - webui
+
+volumes:
+  caddy_data:
+```
+
+**2. Caddyfile:**
+
+```caddyfile
+{
+    email your-email@example.com
+}
+
+{$DOMAIN} {
+    reverse_proxy webui:80
+}
+```
+
+Replace `your-email@example.com` with your email address for Let's Encrypt notifications.
+
+**3. .env:**
+
+```bash
+DOMAIN=webui.spacetivity.dev
+WEBUI_TAG=latest
+```
+
+Replace `webui.spacetivity.dev` with your domain name.
+
+### Starting the Services
+
+```bash
+cd deploy
+docker compose up -d
+```
+
+Caddy will automatically obtain an SSL certificate from Let's Encrypt on first start. Your site will be available at `https://your-domain.com` once the certificate is issued.
+
+### Managing the Deployment
+
+**View logs:**
+```bash
+docker compose logs -f
+```
+
+**Update to latest version:**
+```bash
+docker compose pull && docker compose up -d
+```
+
+**Stop services:**
+```bash
+docker compose down
+```
+
+### Docker Image
+
+Docker images are automatically built and pushed to GitHub Container Registry (`ghcr.io/spacetivity/hylib-webui`) when:
+- Code is pushed to the `production` branch
+- Pull requests are merged into `production`
+- Manually triggered via GitHub Actions workflow
+
+The image is tagged as `latest` for the production branch.
+
+### Troubleshooting
+
+**SSL Certificate Issues:**
+- Ensure your domain DNS A record points to the server's public IP
+- Verify ports 80 and 443 are accessible from the internet
+- Check Caddy logs: `docker compose logs caddy`
+
+**Container Won't Start:**
+- Check logs: `docker compose logs`
+- Verify `.env` file exists and contains valid values
+- Ensure Docker has enough resources allocated
+
+**Updates Not Working:**
+- Pull latest image: `docker compose pull`
+- Restart containers: `docker compose up -d`
+- Check image tag in `.env` matches available tags
+
+## Project Structure
+
+```
+├── src/           # Source code
+├── deploy/        # Docker deployment configuration
+└── dist/          # Build output (generated)
+```
+
+## Notes
+
+- SSL certificates are stored in the `caddy_data` volume and automatically renewed
+- The WebUI container runs on port 80 internally; external access is through Caddy on ports 80/443
+- All configuration files can be edited and changes take effect after restarting containers
