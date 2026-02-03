@@ -1,24 +1,24 @@
 #!/bin/bash
 # HyLib WebUI - Server Setup Script
-# Erstellt nur die notwendigen Dateien für Docker Deployment
+# Creates necessary files for Docker deployment
 
 set -e
 
-echo "🚀 HyLib WebUI Server Setup"
+echo "HyLib WebUI Server Setup"
 echo ""
 
-# Prüfe ob Docker installiert ist
+# Check if Docker is installed
 if ! command -v docker &> /dev/null; then
-    echo "❌ Docker ist nicht installiert. Bitte installiere Docker zuerst."
+    echo "ERROR: Docker is not installed. Please install Docker first."
     exit 1
 fi
 
 if ! command -v docker compose &> /dev/null && ! command -v docker-compose &> /dev/null; then
-    echo "❌ Docker Compose ist nicht installiert. Bitte installiere Docker Compose zuerst."
+    echo "ERROR: Docker Compose is not installed. Please install Docker Compose first."
     exit 1
 fi
 
-# Erstelle docker-compose.yml
+# Create docker-compose.yml
 cat > docker-compose.yml << 'EOF'
 # HyLib Message WebUI – mit Caddy für HTTPS (Let's Encrypt)
 # Vor dem Start: DNS für webui.spacetivity.dev auf die Server-IP zeigen lassen.
@@ -54,7 +54,7 @@ volumes:
   caddy_data:
 EOF
 
-# Erstelle Caddyfile
+# Create Caddyfile
 cat > Caddyfile << 'EOF'
 # Domain aus Umgebungsvariable (docker-compose setzt DOMAIN)
 # Caddy fordert automatisch ein Let's-Encrypt-Zertifikat an (HTTP-01).
@@ -69,22 +69,22 @@ cat > Caddyfile << 'EOF'
 }
 EOF
 
-# Erstelle .env wenn nicht vorhanden
+# Create .env if it doesn't exist
 if [ ! -f .env ]; then
     cat > .env << 'EOF'
 DOMAIN=webui.spacetivity.dev
 WEBUI_TAG=latest
 EOF
-    echo "✅ .env Datei erstellt"
+    echo "SUCCESS: .env file created"
 else
-    echo "ℹ️  .env existiert bereits - überspringe"
+    echo "INFO: .env already exists - skipping"
 fi
 
-echo "✅ docker-compose.yml erstellt"
-echo "✅ Caddyfile erstellt"
+echo "SUCCESS: docker-compose.yml created"
+echo "SUCCESS: Caddyfile created"
 echo ""
-echo "📝 Nächste Schritte:"
-echo "   1. Bearbeite .env falls nötig (DOMAIN anpassen)"
-echo "   2. Stelle sicher, dass DNS auf diesen Server zeigt"
-echo "   3. Starte mit: docker compose up -d"
-echo "   4. Prüfe Logs: docker compose logs -f"
+echo "Next steps:"
+echo "   1. Edit .env if needed (adjust DOMAIN)"
+echo "   2. Make sure DNS points to this server"
+echo "   3. Start with: docker compose up -d"
+echo "   4. Check logs: docker compose logs -f"
