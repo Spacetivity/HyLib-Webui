@@ -78,6 +78,23 @@ The WebUI can be deployed using Docker with automatic SSL via Caddy.
 - A domain name pointing to your server's public IP (DNS A record)
 - Ports 80 and 443 accessible from the internet
 
+### Cloudflare DNS Configuration
+
+If you're using Cloudflare for DNS, add the following DNS record:
+
+1. **Go to Cloudflare Dashboard** → Select your domain → DNS → Records
+2. **Add an A Record:**
+   - **Type:** A
+   - **Name:** `webui` (or your desired subdomain)
+   - **IPv4 address:** Your server's public IP address
+   - **Proxy status:** **DNS only** (gray cloud icon) - **IMPORTANT!**
+   - **TTL:** Auto
+3. **Click Save**
+
+**Important:** The proxy must be **disabled** (DNS only / gray cloud) for Let's Encrypt SSL certificate generation to work. Caddy needs direct access to your server on ports 80 and 443 for the ACME HTTP-01 challenge.
+
+After adding the DNS record, wait a few minutes for DNS propagation, then proceed with the deployment setup.
+
 ### Quick Setup
 
 #### Option 1: Automated Setup Script
@@ -202,10 +219,56 @@ The image is tagged as `latest` for the production branch.
 
 ### Troubleshooting
 
-**SSL Certificate Issues:**
-- Ensure your domain DNS A record points to the server's public IP
-- Verify ports 80 and 443 are accessible from the internet
-- Check Caddy logs: `docker compose logs caddy`
+**SSL Certificate Issues (ERR_SSL_PROTOCOL_ERROR / SSL_ERROR_INTERNAL_ERROR_ALERT):**
+
+1. **Check Cloudflare Proxy Status:**
+   - Go to Cloudflare Dashboard → DNS → Records
+   - Ensure the A record has **DNS only** (gray cloud), NOT proxied (orange cloud)
+   - If proxied, click the cloud icon to disable proxy
+   - Wait 5-10 minutes for changes to propagate
+
+2. **Verify DNS Resolution:**
+   ```bash
+   # Check if DNS points to your server
+   dig webui.spacetivity.dev +short
+   # Should return your server's IP address
+   ```
+
+3. **Check Caddy Logs:**
+   ```bash
+   cd deploy
+   docker compose logs caddy
+   ```
+   Look for errors like:
+   - "acme: error" - Certificate generation failed
+   - "connection refused" - Ports not accessible
+   - "timeout" - DNS or network issues
+
+4. **Verify Ports are Accessible:**
+   ```bash
+   # From another machine, test if ports are open
+   curl -I http://webui.spacetivity.dev
+   # Should return HTTP response, not connection refused
+   ```
+
+5. **Check .env File:**
+   ```bash
+   cd deploy
+   cat .env
+   # Ensure DOMAIN matches your actual domain
+   ```
+
+6. **Restart Caddy Container:**
+   ```bash
+   cd deploy
+   docker compose restart caddy
+   docker compose logs -f caddy
+   ```
+
+7. **If Still Failing - Manual Certificate Check:**
+   - Ensure firewall allows ports 80 and 443
+   - Verify your server's public IP matches the DNS A record
+   - Try accessing `http://webui.spacetivity.dev` (HTTP, not HTTPS) - should redirect or show Caddy error page
 
 **Container Won't Start:**
 - Check logs: `docker compose logs`
