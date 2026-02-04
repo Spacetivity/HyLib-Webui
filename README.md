@@ -35,6 +35,7 @@ A live preview tool for HyLib format tags. Supports the same format as `HyMessag
 - Share formatted messages via URL
 - Copy formatted tag strings
 - Supports all HyLib message tags
+- Prefix support for consistent message formatting
 
 ## Quick Start
 
@@ -63,6 +64,54 @@ npm run preview # Preview production build
 ### Named Colors
 
 `black`, `dark_blue`, `dark_green`, `dark_aqua`, `dark_red`, `dark_purple`, `gold`, `gray`, `dark_gray`, `blue`, `green`, `aqua`, `red`, `light_purple`, `yellow`, `white`
+
+## Placeholders
+
+The WebUI supports placeholders in the format `{0}`, `{1}`, etc. You can define placeholders in the "Placeholders" section:
+
+```
+{0}=Spieler
+{1}=5
+```
+
+Placeholders are replaced in the message text before parsing format tags.
+
+### Prefix Feature
+
+You can define a prefix that will be automatically applied to all `{prefix}` placeholders in your message. This is useful for consistent formatting across multiple messages.
+
+**Usage:**
+
+1. Define the prefix in the dedicated **Prefix** section:
+   ```
+   <gold>[HyLib] <gray>
+   ```
+
+2. Click the **"Insert {prefix}"** button or manually type `{prefix}` in your message:
+   ```
+   {prefix}Welcome {0}! This message uses a prefix.
+   ```
+
+**Features:**
+- Separate input field for easy prefix configuration
+- One-click button to insert `{prefix}` placeholder at cursor position
+- Prefix supports all format tags (colors, gradients, bold, etc.)
+- If no prefix is defined, `{prefix}` is replaced with an empty string
+- Prefix is processed before other placeholders
+
+**Example:**
+```
+Prefix field:
+<gold>[HyLib] <gray>
+
+Placeholders:
+{0}=Player
+
+Message:
+{prefix}Welcome {0}!
+```
+
+Result: `<gold>[HyLib] <gray>Welcome Player!`
 
 ## Sharing
 
