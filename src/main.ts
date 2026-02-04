@@ -4,6 +4,7 @@
  */
 
 import "./style.css";
+import logoImage from "../assets/hylib-logo.png";
 import { createInputSection } from "./ui/input.js";
 import { createPreviewSection } from "./ui/preview.js";
 import { createDocsSection } from "./ui/docs.js";
@@ -49,7 +50,7 @@ mainBarNavInner.className = "mainBar__nav__inner";
 const headerTitle = document.createElement("div");
 headerTitle.className = "mainBar__nav__title";
 const logo = document.createElement("img");
-logo.src = "./assets/hylib-logo.png";
+logo.src = logoImage;
 logo.alt = "HyLib Logo";
 logo.className = "mainBar__logo";
 const h1 = document.createElement("h1");
