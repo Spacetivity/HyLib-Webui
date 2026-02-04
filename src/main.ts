@@ -8,6 +8,7 @@ import { createInputSection } from "./ui/input.js";
 import { createPreviewSection } from "./ui/preview.js";
 import { createDocsSection } from "./ui/docs.js";
 import { createPlaceholdersSection } from "./ui/placeholders.js";
+import { createPrefixSection } from "./ui/prefix.js";
 import { createTemplatesSection } from "./ui/templates.js";
 import { createValidationSection } from "./ui/validation.js";
 import { parsePlaceholderMap, applyPlaceholders } from "./utils/placeholders.js";
@@ -63,11 +64,19 @@ const { container: preview, update: updatePreview } = createPreviewSection();
 const { container: validationContainer, update: updateValidation } = createValidationSection();
 
 let placeholdersValue = "";
+let prefixValue = "";
 
 const inputSection = createInputSection(initial, (value) => {
   updateHash(value);
   refreshPreviewAndValidation();
 });
+
+const messageTextarea = inputSection.querySelector("textarea") as HTMLTextAreaElement;
+
+const prefixSection = createPrefixSection("", (value) => {
+  prefixValue = value;
+  refreshPreviewAndValidation();
+}, messageTextarea);
 
 const placeholdersSection = createPlaceholdersSection("", (value) => {
   placeholdersValue = value;
@@ -84,7 +93,8 @@ function getSubstitutedText(): string {
   const textarea = inputSection.querySelector("textarea") as HTMLTextAreaElement;
   const raw = textarea?.value ?? "";
   const map = parsePlaceholderMap(placeholdersValue);
-  return applyPlaceholders(raw, map);
+  const prefix = prefixValue.trim() || null;
+  return applyPlaceholders(raw, map, prefix);
 }
 
 function refreshPreviewAndValidation(): void {
@@ -102,6 +112,7 @@ function refreshPreviewAndValidation(): void {
 
 app.appendChild(templatesSection);
 app.appendChild(inputSection);
+app.appendChild(prefixSection);
 app.appendChild(placeholdersSection);
 app.appendChild(preview);
 app.appendChild(validationContainer);

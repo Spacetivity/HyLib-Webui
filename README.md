@@ -35,6 +35,7 @@ A live preview tool for HyLib format tags. Supports the same format as `HyMessag
 - Share formatted messages via URL
 - Copy formatted tag strings
 - Supports all HyLib message tags
+- Prefix support for consistent message formatting
 
 ## Quick Start
 
@@ -64,6 +65,54 @@ npm run preview # Preview production build
 
 `black`, `dark_blue`, `dark_green`, `dark_aqua`, `dark_red`, `dark_purple`, `gold`, `gray`, `dark_gray`, `blue`, `green`, `aqua`, `red`, `light_purple`, `yellow`, `white`
 
+## Placeholders
+
+The WebUI supports placeholders in the format `{0}`, `{1}`, etc. You can define placeholders in the "Placeholders" section:
+
+```
+{0}=Spieler
+{1}=5
+```
+
+Placeholders are replaced in the message text before parsing format tags.
+
+### Prefix Feature
+
+You can define a prefix that will be automatically applied to all `{prefix}` placeholders in your message. This is useful for consistent formatting across multiple messages.
+
+**Usage:**
+
+1. Define the prefix in the dedicated **Prefix** section:
+   ```
+   <gold>[HyLib] <gray>
+   ```
+
+2. Click the **"Insert {prefix}"** button or manually type `{prefix}` in your message:
+   ```
+   {prefix}Welcome {0}! This message uses a prefix.
+   ```
+
+**Features:**
+- Separate input field for easy prefix configuration
+- One-click button to insert `{prefix}` placeholder at cursor position
+- Prefix supports all format tags (colors, gradients, bold, etc.)
+- If no prefix is defined, `{prefix}` is replaced with an empty string
+- Prefix is processed before other placeholders
+
+**Example:**
+```
+Prefix field:
+<gold>[HyLib] <gray>
+
+Placeholders:
+{0}=Player
+
+Message:
+{prefix}Welcome {0}!
+```
+
+Result: `<gold>[HyLib] <gray>Welcome Player!`
+
 ## Sharing
 
 Messages can be shared via URL hash: `#m=encoded_text`. Use the Copy button to copy the raw tag string.
@@ -77,6 +126,23 @@ The WebUI can be deployed using Docker with automatic SSL via Caddy.
 - Docker and Docker Compose installed on your server
 - A domain name pointing to your server's public IP (DNS A record)
 - Ports 80 and 443 accessible from the internet
+
+### Cloudflare DNS Configuration
+
+If you're using Cloudflare for DNS, add the following DNS record:
+
+1. **Go to Cloudflare Dashboard** → Select your domain → DNS → Records
+2. **Add an A Record:**
+   - **Type:** A
+   - **Name:** `webui` (or your desired subdomain)
+   - **IPv4 address:** Your server's public IP address
+   - **Proxy status:** **DNS only** (gray cloud icon) - **IMPORTANT!**
+   - **TTL:** Auto
+3. **Click Save**
+
+**Important:** The proxy must be **disabled** (DNS only / gray cloud) for Let's Encrypt SSL certificate generation to work. Caddy needs direct access to your server on ports 80 and 443 for the ACME HTTP-01 challenge.
+
+After adding the DNS record, wait a few minutes for DNS propagation, then proceed with the deployment setup.
 
 ### Quick Setup
 
@@ -202,10 +268,56 @@ The image is tagged as `latest` for the production branch.
 
 ### Troubleshooting
 
-**SSL Certificate Issues:**
-- Ensure your domain DNS A record points to the server's public IP
-- Verify ports 80 and 443 are accessible from the internet
-- Check Caddy logs: `docker compose logs caddy`
+**SSL Certificate Issues (ERR_SSL_PROTOCOL_ERROR / SSL_ERROR_INTERNAL_ERROR_ALERT):**
+
+1. **Check Cloudflare Proxy Status:**
+   - Go to Cloudflare Dashboard → DNS → Records
+   - Ensure the A record has **DNS only** (gray cloud), NOT proxied (orange cloud)
+   - If proxied, click the cloud icon to disable proxy
+   - Wait 5-10 minutes for changes to propagate
+
+2. **Verify DNS Resolution:**
+   ```bash
+   # Check if DNS points to your server
+   dig webui.spacetivity.dev +short
+   # Should return your server's IP address
+   ```
+
+3. **Check Caddy Logs:**
+   ```bash
+   cd deploy
+   docker compose logs caddy
+   ```
+   Look for errors like:
+   - "acme: error" - Certificate generation failed
+   - "connection refused" - Ports not accessible
+   - "timeout" - DNS or network issues
+
+4. **Verify Ports are Accessible:**
+   ```bash
+   # From another machine, test if ports are open
+   curl -I http://webui.spacetivity.dev
+   # Should return HTTP response, not connection refused
+   ```
+
+5. **Check .env File:**
+   ```bash
+   cd deploy
+   cat .env
+   # Ensure DOMAIN matches your actual domain
+   ```
+
+6. **Restart Caddy Container:**
+   ```bash
+   cd deploy
+   docker compose restart caddy
+   docker compose logs -f caddy
+   ```
+
+7. **If Still Failing - Manual Certificate Check:**
+   - Ensure firewall allows ports 80 and 443
+   - Verify your server's public IP matches the DNS A record
+   - Try accessing `http://webui.spacetivity.dev` (HTTP, not HTTPS) - should redirect or show Caddy error page
 
 **Container Won't Start:**
 - Check logs: `docker compose logs`

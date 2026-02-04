@@ -14,6 +14,7 @@ export const TEMPLATES: Template[] = [
   { name: "Link", value: "Visit <link:https://hytale.com>Hytale</link> for more info." },
   { name: "Mixed", value: "<bold>Bold</bold> <italic>Italic</italic> <underline>Underline</underline> <monospace>Mono</monospace>" },
   { name: "Reset", value: "<red>Red text</red> <reset>Back to default</reset>" },
+  { name: "Prefix", value: "{prefix}Welcome {0}! This message uses a prefix." },
 ];
 
 export function createTemplatesSection(onSelect: (value: string) => void): HTMLElement {
