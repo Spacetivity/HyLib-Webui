@@ -25,7 +25,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-    # Nur ausführen bei Push auf production oder wenn PR in production gemerged wurde
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
 
     steps:
