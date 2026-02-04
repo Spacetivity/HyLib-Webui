@@ -47,9 +47,7 @@ export function validate(text: string): ValidationWarning[] {
 
     if (isClosing) {
       const idx = stack.lastIndexOf(tagName);
-      if (idx === -1) {
-        warnings.push({ type: "unclosed", message: `Closing tag </${tagName}> has no matching opening tag`, tag: tagName });
-      } else {
+      if (idx !== -1) {
         stack.splice(idx, 1);
       }
       continue;
@@ -83,9 +81,6 @@ export function validate(text: string): ValidationWarning[] {
     }
   }
 
-  for (const tag of stack) {
-    warnings.push({ type: "unclosed", message: `Unclosed tag: <${tag}>`, tag });
-  }
 
   return warnings;
 }

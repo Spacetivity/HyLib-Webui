@@ -33,15 +33,30 @@ function updateHash(value: string): void {
   history.replaceState(null, "", `#m=${encodeURIComponent(value)}`);
 }
 
-const initial = getInitialFromHash() || "Hello <bold>World</bold>! Try <gradient:red:blue>rainbow</gradient> or <link:https://hytale.com>Hytale</link>.";
+const initial = getInitialFromHash() || "";
 
 const app = document.getElementById("app")!;
 app.innerHTML = "";
 
-const headerRow = document.createElement("div");
-headerRow.className = "header-row";
+const mainBar = document.createElement("div");
+mainBar.className = "mainBar";
+const container = document.createElement("div");
+container.className = "container";
+const mainBarNav = document.createElement("div");
+mainBarNav.className = "mainBar__nav";
+const mainBarNavInner = document.createElement("div");
+mainBarNavInner.className = "mainBar__nav__inner";
+const headerTitle = document.createElement("div");
+headerTitle.className = "mainBar__nav__title";
+const logo = document.createElement("img");
+logo.src = "/assets/hylib-logo.png";
+logo.alt = "HyLib Logo";
+logo.className = "mainBar__logo";
 const h1 = document.createElement("h1");
 h1.textContent = "HyLib Message Preview";
+h1.className = "mainBar__title";
+headerTitle.appendChild(logo);
+headerTitle.appendChild(h1);
 
 const copyBtn = document.createElement("button");
 copyBtn.className = "copy-btn mainBar__cta-btn";
@@ -52,13 +67,16 @@ clearBtn.className = "clear-btn mainBar__cta-btn";
 clearBtn.innerHTML = `<span class="mainBar__cta-btn__label">Clear</span>`;
 
 const buttonGroup = document.createElement("div");
-buttonGroup.className = "header-row__buttons";
+buttonGroup.className = "mainBar__nav__inner__cta";
 buttonGroup.appendChild(clearBtn);
 buttonGroup.appendChild(copyBtn);
 
-headerRow.appendChild(h1);
-headerRow.appendChild(buttonGroup);
-app.appendChild(headerRow);
+mainBarNavInner.appendChild(headerTitle);
+mainBarNavInner.appendChild(buttonGroup);
+mainBarNav.appendChild(mainBarNavInner);
+container.appendChild(mainBarNav);
+mainBar.appendChild(container);
+app.appendChild(mainBar);
 
 const { container: preview, update: updatePreview } = createPreviewSection();
 const { container: validationContainer, update: updateValidation } = createValidationSection();
