@@ -26,7 +26,7 @@ cat > docker-compose.yml << 'EOF'
 services:
   webui:
     # Standard: Image von GHCR pullen
-    image: ghcr.io/spacetivity/hylib-webui:${WEBUI_TAG:-latest}
+    image: ghcr.io/tobiasheimboeck/hylib-webui:${WEBUI_TAG:-latest}
     restart: unless-stopped
     pull_policy: always
     # Für lokalen Build: Kommentiere die image-Zeile aus und entferne Kommentar bei build:
