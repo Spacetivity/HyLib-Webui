@@ -186,7 +186,7 @@ Create the following files in the `deploy/` directory:
 ```yaml
 services:
   webui:
-    image: ghcr.io/spacetivity/hylib-webui:${WEBUI_TAG:-latest}
+    image: ghcr.io/tobiasheimboeck/hylib-webui:${WEBUI_TAG:-latest}
     restart: unless-stopped
     pull_policy: always
 
@@ -259,7 +259,7 @@ docker compose down
 
 ### Docker Image
 
-Docker images are automatically built and pushed to GitHub Container Registry (`ghcr.io/spacetivity/hylib-webui`) when:
+Docker images are automatically built and pushed to GitHub Container Registry (`ghcr.io/tobiasheimboeck/hylib-webui`) when:
 - Code is pushed to the `production` branch
 - Pull requests are merged into `production`
 - Manually triggered via GitHub Actions workflow
