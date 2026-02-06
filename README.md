@@ -186,7 +186,7 @@ Create the following files in the `deploy/` directory:
 ```yaml
 services:
   webui:
-    image: ghcr.io/tobiasheimboeck/hymessages-webui:${WEBUI_TAG:-latest}
+    image: ghcr.io/tobiasheimboeck/hymessage-webui:${WEBUI_TAG:-latest}
     restart: unless-stopped
     pull_policy: always
 
@@ -197,7 +197,7 @@ services:
       - "80:80"
       - "443:443"
     environment:
-      DOMAIN: ${DOMAIN:-webui.spacetivity.dev}
+      DOMAIN: ${DOMAIN:-webui.developertobi.net}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
@@ -225,11 +225,11 @@ Replace `your-email@example.com` with your email address for Let's Encrypt notif
 **3. .env:**
 
 ```bash
-DOMAIN=webui.spacetivity.dev
+DOMAIN=webui.developertobi.net
 WEBUI_TAG=latest
 ```
 
-Replace `webui.spacetivity.dev` with your domain name.
+Replace `webui.developertobi.net` with your domain name.
 
 ### Starting the Services
 
@@ -259,7 +259,7 @@ docker compose down
 
 ### Docker Image
 
-Docker images are automatically built and pushed to GitHub Container Registry (`ghcr.io/tobiasheimboeck/hymessages-webui`) when:
+Docker images are automatically built and pushed to GitHub Container Registry (`ghcr.io/tobiasheimboeck/hymessage-webui`) when:
 - Code is pushed to the `production` branch
 - Pull requests are merged into `production`
 - Manually triggered via GitHub Actions workflow
@@ -279,7 +279,7 @@ The image is tagged as `latest` for the production branch.
 2. **Verify DNS Resolution:**
    ```bash
    # Check if DNS points to your server
-   dig webui.spacetivity.dev +short
+   dig webui.developertobi.net +short
    # Should return your server's IP address
    ```
 
@@ -296,7 +296,7 @@ The image is tagged as `latest` for the production branch.
 4. **Verify Ports are Accessible:**
    ```bash
    # From another machine, test if ports are open
-   curl -I http://webui.spacetivity.dev
+   curl -I http://webui.developertobi.net
    # Should return HTTP response, not connection refused
    ```
 
@@ -317,7 +317,7 @@ The image is tagged as `latest` for the production branch.
 7. **If Still Failing - Manual Certificate Check:**
    - Ensure firewall allows ports 80 and 443
    - Verify your server's public IP matches the DNS A record
-   - Try accessing `http://webui.spacetivity.dev` (HTTP, not HTTPS) - should redirect or show Caddy error page
+   - Try accessing `http://webui.developertobi.net` (HTTP, not HTTPS) - should redirect or show Caddy error page
 
 **Container Won't Start:**
 - Check logs: `docker compose logs`
