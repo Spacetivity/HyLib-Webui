@@ -10,7 +10,7 @@ export function createInputSection(
   section.className = "input-section";
 
   const label = document.createElement("label");
-  label.textContent = "Message (HyLib format tags)";
+  label.textContent = "Message (HyMessage format tags)";
   section.appendChild(label);
 
   const textarea = document.createElement("textarea");

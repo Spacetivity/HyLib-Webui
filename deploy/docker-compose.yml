@@ -1,10 +1,10 @@
-# HyLib Message WebUI – mit Caddy für HTTPS (Let's Encrypt)
+# HyMessage WebUI – mit Caddy für HTTPS (Let's Encrypt)
 # Vor dem Start: DNS für webui.spacetivity.dev auf die Server-IP zeigen lassen.
 
 services:
   webui:
     # Standard: Image von GHCR pullen
-    image: ghcr.io/tobiasheimboeck/hylib-webui:${WEBUI_TAG:-latest}
+    image: ghcr.io/tobiasheimboeck/hymessages-webui:${WEBUI_TAG:-latest}
     restart: unless-stopped
     pull_policy: always
     # Für lokalen Build: Kommentiere die image-Zeile aus und entferne Kommentar bei build:

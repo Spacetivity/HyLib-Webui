@@ -1,5 +1,5 @@
 /**
- * HyLib Message WebUI – Live preview for HyLib format tags.
+ * HyMessage WebUI – Live preview for HyMessage format tags.
  * Uses same format as MessageParserImpl / HyMessages.parse().
  */
 
@@ -51,10 +51,10 @@ const headerTitle = document.createElement("div");
 headerTitle.className = "mainBar__nav__title";
 const logo = document.createElement("img");
 logo.src = logoImage;
-logo.alt = "HyLib Logo";
+logo.alt = "HyMessage Logo";
 logo.className = "mainBar__logo";
 const h1 = document.createElement("h1");
-h1.textContent = "HyLib Message Preview";
+h1.textContent = "HyMessage Message Preview";
 h1.className = "mainBar__title";
 headerTitle.appendChild(logo);
 headerTitle.appendChild(h1);

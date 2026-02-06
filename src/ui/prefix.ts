@@ -27,7 +27,7 @@ export function createPrefixSection(
   input.type = "text";
   input.className = "prefix-input";
   input.value = initialValue;
-  input.placeholder = "<gold>[HyLib] <gray>";
+  input.placeholder = "<gold>[HyMessage] <gray>";
   input.addEventListener("input", () => onChange(input.value));
   inputRow.appendChild(input);
 
