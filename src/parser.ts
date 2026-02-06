@@ -1,5 +1,5 @@
 /**
- * Port of MessageParserImpl.java – parses HyLib format tags into segments.
+ * Port of MessageParserImpl.java – parses HyMessage format tags into segments.
  * Tag syntax: <tag>, </tag>, <tag:arg>
  * Regex: <(/?)([a-zA-Z0-9_]+)(?::([^>]+))?>
  */
@@ -193,7 +193,7 @@ function createSegment(
 }
 
 /**
- * Parses a string with HyLib format tags into a flat list of styled segments.
+ * Parses a string with HyMessage format tags into a flat list of styled segments.
  * Matches the behavior of MessageParserImpl.parse() in Java.
  */
 export function parse(text: string): MessageSegment[] {

@@ -1,10 +1,10 @@
 #!/bin/bash
-# HyLib WebUI - Server Setup Script
+# HyMessage WebUI - Server Setup Script
 # Creates necessary files for Docker deployment
 
 set -e
 
-echo "HyLib WebUI Server Setup"
+echo "HyMessage WebUI Server Setup"
 echo ""
 
 # Check if Docker is installed
@@ -20,13 +20,13 @@ fi
 
 # Create docker-compose.yml
 cat > docker-compose.yml << 'EOF'
-# HyLib Message WebUI – mit Caddy für HTTPS (Let's Encrypt)
+# HyMessage WebUI – mit Caddy für HTTPS (Let's Encrypt)
 # Vor dem Start: DNS für webui.spacetivity.dev auf die Server-IP zeigen lassen.
 
 services:
   webui:
     # Standard: Image von GHCR pullen
-    image: ghcr.io/tobiasheimboeck/hylib-webui:${WEBUI_TAG:-latest}
+    image: ghcr.io/tobiasheimboeck/hymessages-webui:${WEBUI_TAG:-latest}
     restart: unless-stopped
     pull_policy: always
     # Für lokalen Build: Kommentiere die image-Zeile aus und entferne Kommentar bei build:

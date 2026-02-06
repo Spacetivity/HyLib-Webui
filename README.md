@@ -1,6 +1,6 @@
-# HyLib Message WebUI
+# HyMessage WebUI
 
-A live preview tool for HyLib format tags. Supports the same format as `HyMessages.parse()` and `MessageParserImpl` in HyLib.
+A live preview tool for HyMessage format tags. Supports the same format as `HyMessages.parse()` and `MessageParserImpl` in HyMessage.
 
 <div align="center">
 
@@ -31,10 +31,10 @@ A live preview tool for HyLib format tags. Supports the same format as `HyMessag
 
 ## Features
 
-- Real-time preview of HyLib message formatting
+- Real-time preview of HyMessage message formatting
 - Share formatted messages via URL
 - Copy formatted tag strings
-- Supports all HyLib message tags
+- Supports all HyMessage message tags
 - Prefix support for consistent message formatting
 
 ## Quick Start
@@ -84,7 +84,7 @@ You can define a prefix that will be automatically applied to all `{prefix}` pla
 
 1. Define the prefix in the dedicated **Prefix** section:
    ```
-   <gold>[HyLib] <gray>
+   <gold>[HyMessage] <gray>
    ```
 
 2. Click the **"Insert {prefix}"** button or manually type `{prefix}` in your message:
@@ -102,7 +102,7 @@ You can define a prefix that will be automatically applied to all `{prefix}` pla
 **Example:**
 ```
 Prefix field:
-<gold>[HyLib] <gray>
+<gold>[HyMessage] <gray>
 
 Placeholders:
 {0}=Player
@@ -111,7 +111,7 @@ Message:
 {prefix}Welcome {0}!
 ```
 
-Result: `<gold>[HyLib] <gray>Welcome Player!`
+Result: `<gold>[HyMessage] <gray>Welcome Player!`
 
 ## Sharing
 
@@ -150,7 +150,7 @@ After adding the DNS record, wait a few minutes for DNS propagation, then procee
 
 **If you have the repository cloned:**
 ```bash
-cd /path/to/HyLib-webui/deploy
+cd /path/to/HyMessage-Webui/deploy
 chmod +x setup-server.sh
 ./setup-server.sh
 ```
@@ -158,7 +158,7 @@ chmod +x setup-server.sh
 **If downloading from GitHub:**
 ```bash
 # Download the setup script
-curl -L -o setup-server.sh https://raw.githubusercontent.com/Spacetivity/HyLib-webui/production/deploy/setup-server.sh
+curl -L -o setup-server.sh https://raw.githubusercontent.com/tobiasheimboeck/HyMessage-Webui/production/deploy/setup-server.sh
 
 # Verify it's a valid script (should start with #!/bin/bash)
 head -n 1 setup-server.sh
@@ -171,7 +171,7 @@ cd deploy
 ```
 
 **Note:** If you get a "404: command not found" error, the download failed and you got an HTML error page instead of the script. In that case:
-1. Clone the repository: `git clone https://github.com/Spacetivity/HyLib-webui.git`
+1. Clone the repository: `git clone https://github.com/tobiasheimboeck/HyMessage-Webui.git`
 2. Copy `deploy/setup-server.sh` to your server
 3. Or use Option 2 to create the files manually
 
@@ -186,7 +186,7 @@ Create the following files in the `deploy/` directory:
 ```yaml
 services:
   webui:
-    image: ghcr.io/tobiasheimboeck/hylib-webui:${WEBUI_TAG:-latest}
+    image: ghcr.io/tobiasheimboeck/hymessages-webui:${WEBUI_TAG:-latest}
     restart: unless-stopped
     pull_policy: always
 
@@ -259,7 +259,7 @@ docker compose down
 
 ### Docker Image
 
-Docker images are automatically built and pushed to GitHub Container Registry (`ghcr.io/tobiasheimboeck/hylib-webui`) when:
+Docker images are automatically built and pushed to GitHub Container Registry (`ghcr.io/tobiasheimboeck/hymessages-webui`) when:
 - Code is pushed to the `production` branch
 - Pull requests are merged into `production`
 - Manually triggered via GitHub Actions workflow

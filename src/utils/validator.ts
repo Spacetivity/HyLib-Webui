@@ -1,5 +1,5 @@
 /**
- * Validates HyLib tag strings – unclosed tags, invalid hex, unknown tags.
+ * Validates HyMessage tag strings – unclosed tags, invalid hex, unknown tags.
  */
 
 const TAG_PATTERN = new RegExp("<(/?)([a-zA-Z0-9_]+)(?::([^>]+))?>", "g");
